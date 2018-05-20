@@ -16,7 +16,7 @@ public class fileChooser {
 				FileReader fr = new FileReader(fileName);
 				int c = fr.read();
 				while (c != -1) {
-					System.out.println((char) c);
+					System.out.print((char) c);
 					c = fr.read();
 				}
 				fr.close();
