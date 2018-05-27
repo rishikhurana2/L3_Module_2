@@ -2,11 +2,13 @@ package intro_to_file_io;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,6 +49,7 @@ public class todoListTracker implements ActionListener {
 		b2.addActionListener(this);
 		b3.addActionListener(this);
 		b4.addActionListener(this);
+		taskHolder.add(0, "To-Do List");
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -54,8 +57,12 @@ public class todoListTracker implements ActionListener {
 		if (e.getSource() == b1) {
 			task = JOptionPane.showInputDialog("Please add a task");
 			try {
-				FileWriter fw = new FileWriter("src/intro_to_file_io/To-Do List", true);
-				fw.write(task + "\n ");
+				taskHolder.add(task);
+				FileWriter fw = new FileWriter("src/intro_to_file_io/To-Do List", false);
+				for (int i = 0; i < taskHolder.size(); i++) {
+						fw.write(taskHolder.get(i) + "\n");
+				}
+				System.out.println(taskHolder);
 				fw.close();
 			} catch (IOException j) {
 				// TODO Auto-generated catch block
@@ -63,22 +70,14 @@ public class todoListTracker implements ActionListener {
 			}
 		}
 		if (e.getSource() == b2) {
-			removeTask = JOptionPane.showInputDialog("Please remove a task");
 			try {
-				FileReader fr = new FileReader("src/intro_to_file_io/To-Do List");
-				int c = fr.read();
-				String task = "";
-				while(c != -1) {
-					char k = (char) c;
-					if (k == ' ') {
-						String cur = task;
-						taskHolder.add(cur);
-						task = "";
-					}
-					task += k;
-					c = fr.read();
-				}
-					System.out.println(taskHolder.get(1));
+				BufferedReader br = new BufferedReader(new FileReader("src/intro_to_file_io/To-Do List"));
+				FileWriter fr = new FileWriter("src/intro_to_file_io/To-Do List");
+				br.readLine();
+				String i = JOptionPane.showInputDialog("Please enter the task you would like to remove");
+				taskHolder.remove(i);
+				System.out.println(taskHolder);
+				br.close();
 				fr.close();
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
